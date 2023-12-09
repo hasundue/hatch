@@ -1,10 +1,7 @@
-# Create
+# Hatch
 
-Create a script to create files with a GitHub repository as a template.
-
-## Features
-
-- Zero dependencies rather than the Deno runtime
+Create a script to create files with a remote Git repository as a template. Zero
+dependencies rather than the Deno runtime.
 
 ## Requirements
 
@@ -15,25 +12,25 @@ Create a script to create files with a GitHub repository as a template.
 ### Installation (optional)
 
 ```bash
-$ deno install -f -A https://cdn.jsdelivr.net/gh/hasundue/create@{ref}/main.ts [repository] [ref]
+$ deno install https://deno.land/x/hatch@{VERSION}/gh/hatch.ts [...]
 ```
 
 ### Example
 
-#### Install latest version of `create` with `main` branch of `hasundue/create` repository as a template
+#### Install latest version of `hatch` with the default branch of `hasundue/incubator` repository as a template
 
 ```bash
-$ deno install -f -A --name create https://cdn.jsdelivr.net/gh/hasundue/create/main.ts hasundue/create main
+$ deno install https://deno.land/x/hatch@{VERSION}/gh/hatch.ts hasundue/incubator
 ```
 
-#### Create README.md and LICENSE
+#### Create README.md
 
 ```bash
-$ create README.md LICENSE
+$ hatch README.md
 ```
 
 #### Running without installation
 
 ```bash
-$ deno run https://cdn.jsdelivr.net/gh/hasundue/create/main.ts hasundue/create main README.md LICENSE
+$ deno run https://deno.land/x/hatch@{VERSION}/gh/hatch.ts hasundue/incubator README.md
 ```
