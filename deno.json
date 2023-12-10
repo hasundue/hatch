@@ -1,10 +1,8 @@
 {
   "tasks": {
-    "cache": "deno cache ./**/*.ts --lock",
-    "lock": "deno task -q cache --lock-write && git add deno.lock",
     "check": "deno check ./**/*.ts",
     "test": "deno test -A --no-check",
-    "precommit": "deno fmt && deno lint && deno task -q lock && deno task -q check && deno task -q test",
+    "precommit": "deno fmt && deno lint && deno task -q check && deno task -q test",
     "run": "deno run --allow-read=. --allow-write=. --allow-net=api.github.com gh/hatch.ts hasundue/hatch",
     "update": "deno run --allow-env --allow-read --allow-write --allow-net=deno.land,registry.npmjs.org --allow-run=git,deno https://deno.land/x/molt@0.14.2/cli.ts ./**/*.ts",
     "update:commit": "deno task -q update --commit --pre-commit precommit --prefix 'build(deps):'"
@@ -15,5 +13,6 @@
         "no-sync-fn-in-async-fn"
       ]
     }
-  }
+  },
+  "lock": false
 }
