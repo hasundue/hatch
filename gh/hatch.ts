@@ -1,7 +1,5 @@
 import { confirm, parseArgs } from "../lib/_common.ts";
 
-const HOST = "https://api.github.com";
-
 type ContentJson = FileJson | DirJson;
 
 type FileJson = {
@@ -11,21 +9,21 @@ type FileJson = {
 };
 
 type DirJson = {
-  type: "dir" | "file";
+  type: string;
   path: string;
   url: string;
 }[];
 
-function isDirResponse(response: ContentJson): response is DirJson {
+function isDirJson(response: ContentJson): response is DirJson {
   return Array.isArray(response);
 }
 
 async function hatch(args: string[]) {
   const { repo, ref, path } = parseArgs(args);
   const json = await getContent(
-    `${HOST}/repos/${repo}/contents/${path}?ref=${ref}`,
+    `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`,
   );
-  return isDirResponse(json) ? hatchDir(json) : hatchFile(json);
+  return isDirJson(json) ? hatchDir(json) : hatchFile(json);
 }
 
 async function getContent(url: string) {
@@ -34,9 +32,6 @@ async function getContent(url: string) {
     throw new Error(
       `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
     );
-  }
-  if (!response.body) {
-    throw new Error(`Missing body in response for ${url}`);
   }
   return await response.json() as ContentJson;
 }

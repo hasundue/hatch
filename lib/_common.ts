@@ -19,7 +19,7 @@ export function parseArgs(args: string[]): EggSpec {
   return { repo: `${owner}/${repo}`, ref, path: rest.join("/") };
 }
 
-export async function confirm(msg: string): Promise<boolean> {
+export async function confirm(msg: string) {
   await Deno.stdout.write(new TextEncoder().encode(msg));
 
   for await (const chunk of Deno.stdin.readable) {
@@ -29,5 +29,5 @@ export async function confirm(msg: string): Promise<boolean> {
       return false;
     }
   }
-  return false;
+  throw new Error("Unreachable");
 }
