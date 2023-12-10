@@ -5,22 +5,11 @@
     "check": "deno check ./**/*.ts",
     "test": "deno test -A --no-check",
     "precommit": "deno fmt && deno lint && deno task -q lock && deno task -q check && deno task -q test",
-    "run": "deno run --allow-env --allow-read --allow-write --allow-net=deno.land,registry.npmjs.org,api.github.com --allow-run=git,deno",
-    "main": "deno task -q run gh/hatch.ts hasundue/hatch@main",
-    "update": "deno task -q run https://deno.land/x/molt@0.14.2/cli.ts ./**/*.ts",
+    "run": "deno run --allow-read=. --allow-write=. --allow-net=api.github.com gh/hatch.ts hasundue/hatch",
+    "update": "deno run --allow-env --allow-read --allow-write --allow-net=deno.land,registry.npmjs.org --allow-run=git,deno https://deno.land/x/molt@0.14.2/cli.ts ./**/*.ts",
     "update:commit": "deno task -q update --commit --pre-commit precommit --prefix 'build(deps):'"
   },
-  "fmt": {
-    "exclude": [
-      "test/data",
-      "test/snapshots"
-    ]
-  },
   "lint": {
-    "exclude": [
-      "test/data",
-      "test/snapshots"
-    ],
     "rules": {
       "include": [
         "no-sync-fn-in-async-fn"
