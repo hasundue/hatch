@@ -18,7 +18,10 @@ function isDirJson(response: ContentJson): response is DirJson {
   return Array.isArray(response);
 }
 
-async function hatch(args: string[]) {
+/**
+ * Fetches a file or directory from GitHub
+ */
+export async function hatch(args: string[]) {
   const { repo, ref, path } = parseArgs(args);
   const json = await getContent(
     `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`,
