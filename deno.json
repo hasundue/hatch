@@ -5,8 +5,8 @@
     "check": "deno check ./**/*.ts",
     "test": "deno test -A --no-check",
     "precommit": "deno fmt && deno lint && deno task -q lock && deno task -q check && deno task -q test",
-    "run": "deno run --allow-env --allow-read --allow-write --allow-net=deno.land,registry.npmjs.org,raw.githubusercontent.com --allow-run=git,deno",
-    "main": "deno task -q run main.ts hasundue/create main",
+    "run": "deno run --allow-env --allow-read --allow-write --allow-net=deno.land,registry.npmjs.org,api.github.com --allow-run=git,deno",
+    "main": "deno task -q run gh/hatch.ts hasundue/hatch@main",
     "update": "deno task -q run https://deno.land/x/molt@0.14.2/cli.ts ./**/*.ts",
     "update:commit": "deno task -q update --commit --pre-commit precommit --prefix 'build(deps):'"
   },

@@ -5,8 +5,7 @@ Deno.test("parseArgs", () => {
   assertEquals(
     parseArgs(["owner/repo", "path/to/file"]),
     {
-      owner: "owner",
-      repo: "repo",
+      repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
     },
@@ -14,8 +13,7 @@ Deno.test("parseArgs", () => {
   assertEquals(
     parseArgs(["owner/repo@dev", "path/to/file"]),
     {
-      owner: "owner",
-      repo: "repo",
+      repo: "owner/repo",
       ref: "dev",
       path: "path/to/file",
     },
@@ -23,8 +21,7 @@ Deno.test("parseArgs", () => {
   assertEquals(
     parseArgs(["owner", "repo", "path/to/file"]),
     {
-      owner: "owner",
-      repo: "repo",
+      repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
     },
@@ -32,8 +29,7 @@ Deno.test("parseArgs", () => {
   assertEquals(
     parseArgs(["owner", "repo", "path", "to", "file"]),
     {
-      owner: "owner",
-      repo: "repo",
+      repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
     },
@@ -41,8 +37,7 @@ Deno.test("parseArgs", () => {
   assertEquals(
     parseArgs(["owner", "repo", "@dev", "path", "to", "file"]),
     {
-      owner: "owner",
-      repo: "repo",
+      repo: "owner/repo",
       ref: "dev",
       path: "path/to/file",
     },
