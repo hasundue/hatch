@@ -44,11 +44,10 @@ async function hatchDir(dir: DirJson, dest: string) {
   await Deno.mkdir(dest, { recursive: true });
   for (const entry of dir) {
     const content = await getContent(entry.url);
-    dest = join(dest, entry.name);
     if (entry.type === "dir") {
-      await hatchDir(content as DirJson, dest);
+      await hatchDir(content as DirJson, join(dest, entry.name));
     } else {
-      await hatchFile(content as FileJson, dest);
+      await hatchFile(content as FileJson, join(dest, entry.name));
     }
   }
 }
