@@ -1,7 +1,5 @@
 # 🐣 Hatch
 
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https://deno.land/x/hatch/mod.ts)
-
 A meta-command to create a command that fetches a file or directory from a
 remote repository. Zero dependencies rather than the Deno runtime.
 
