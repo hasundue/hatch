@@ -1,32 +1,22 @@
+import { join } from "https://deno.land/std@0.208.0/path/join.ts";
 import { confirm, parseArgs } from "../lib/_common.ts";
 
 type ContentJson = FileJson | DirJson;
 
 type FileJson = {
-  path: string;
+  name: string;
   content: string;
   encoding: string;
 };
 
 type DirJson = {
   type: string;
-  path: string;
+  name: string;
   url: string;
 }[];
 
 function isDirJson(response: ContentJson): response is DirJson {
   return Array.isArray(response);
-}
-
-/**
- * Fetches a file or directory from GitHub
- */
-export async function hatch(args: string[]) {
-  const { repo, ref, path } = parseArgs(args);
-  const json = await getContent(
-    `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`,
-  );
-  return isDirJson(json) ? hatchDir(json) : hatchFile(json);
 }
 
 async function getContent(url: string) {
@@ -36,34 +26,46 @@ async function getContent(url: string) {
       `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
     );
   }
-  return await response.json() as ContentJson;
+  return response.json() as Promise<ContentJson>;
 }
 
-async function hatchDir(dir: DirJson) {
+/**
+ * Fetches a file or directory from GitHub
+ */
+export async function hatch(args: string[]) {
+  const { repo, ref, path, dest } = parseArgs(args);
+  const json = await getContent(
+    `https://api.github.com/repos/${repo}/contents/${path}?ref=${ref}`,
+  );
+  return isDirJson(json) ? hatchDir(json, dest) : hatchFile(json, dest);
+}
+
+async function hatchDir(dir: DirJson, dest: string) {
+  await Deno.mkdir(dest, { recursive: true });
   for (const entry of dir) {
+    const content = await getContent(entry.url);
+    dest = join(dest, entry.name);
     if (entry.type === "dir") {
-      await Deno.mkdir(entry.path);
-      await hatchDir(await getContent(entry.url) as DirJson);
+      await hatchDir(content as DirJson, dest);
     } else {
-      await hatchFile(await getContent(entry.url) as FileJson);
+      await hatchFile(content as FileJson, dest);
     }
   }
 }
-
-async function hatchFile(file: FileJson) {
-  const { path, content, encoding } = file;
-  const info = await Deno.stat(path).catch(() => null);
+async function hatchFile(file: FileJson, dest: string) {
+  const { content, encoding } = file;
+  const info = await Deno.stat(dest).catch(() => null);
   if (info?.isFile) {
     const confirmed = await confirm(
-      `${path} already exists. Overwrite? [y/N] `,
+      `${dest} already exists. Overwrite? [y/N] `,
     );
     if (!confirmed) return;
   }
   if (encoding !== "base64") {
     throw new Error(`Unsupported encoding: ${encoding}`);
   }
-  await Deno.writeTextFile(path, atob(content));
-  console.log(`🐣 ${path}`);
+  await Deno.writeTextFile(dest, atob(content));
+  console.log(`🐣 ${dest}`);
 }
 
 if (import.meta.main) {

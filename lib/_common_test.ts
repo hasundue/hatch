@@ -8,6 +8,7 @@ Deno.test("parseArgs", () => {
       repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
+      dest: "path/to/file",
     },
   );
   assertEquals(
@@ -16,6 +17,7 @@ Deno.test("parseArgs", () => {
       repo: "owner/repo",
       ref: "dev",
       path: "path/to/file",
+      dest: "path/to/file",
     },
   );
   assertEquals(
@@ -24,22 +26,25 @@ Deno.test("parseArgs", () => {
       repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
+      dest: "path/to/file",
     },
   );
   assertEquals(
-    parseArgs(["owner", "repo", "path", "to", "file"]),
+    parseArgs(["owner", "repo", "path/to", "file"]),
     {
       repo: "owner/repo",
       ref: "main",
       path: "path/to/file",
+      dest: "file",
     },
   );
   assertEquals(
-    parseArgs(["owner", "repo", "@dev", "path", "to", "file"]),
+    parseArgs(["owner", "repo", "@dev", "path/to", "file"]),
     {
       repo: "owner/repo",
       ref: "dev",
       path: "path/to/file",
+      dest: "file",
     },
   );
 });

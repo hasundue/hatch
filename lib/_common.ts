@@ -1,10 +1,11 @@
-export interface EggSpec {
+export interface CommandSpec {
   repo: string;
   ref: string;
   path: string;
+  dest: string;
 }
 
-export function parseArgs(args: string[]): EggSpec {
+export function parseArgs(args: string[]): CommandSpec {
   /** @example "owner/repo/@main/path/to/file" */
   const joined = args.join("/");
 
@@ -16,7 +17,12 @@ export function parseArgs(args: string[]): EggSpec {
     .replace(/\/+/g, "/")
     .split("/");
 
-  return { repo: `${owner}/${repo}`, ref, path: rest.join("/") };
+  return {
+    repo: `${owner}/${repo}`,
+    ref,
+    path: rest.join("/"),
+    dest: args.at(-1)!,
+  };
 }
 
 export async function confirm(msg: string) {
